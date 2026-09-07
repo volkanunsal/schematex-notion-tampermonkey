@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "types": ["node", "tampermonkey"]
   },
-  "include": ["src", "scripts/*.test.mjs"]
+  "include": ["src", "scripts/*.test.mjs", "vitest.config.ts"]
 }
