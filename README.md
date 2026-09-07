@@ -1,11 +1,15 @@
 # SchemaTex for Notion
 
+<div align="center">
+
 <img src="media/logo.svg" alt="SchemaTex for Notion logo" width="120" height="120" />
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 [![Tampermonkey](https://img.shields.io/badge/Tampermonkey-compatible-brightgreen)](https://www.tampermonkey.net/)
 
 [![Install with Tampermonkey](https://img.shields.io/badge/Install-Tampermonkey-orange?style=for-the-badge)](https://raw.githubusercontent.com/volkanunsal/schematex-notion-tampermonkey/main/out/schematex-notion.user.js)
+
+</div>
 
 Renders [SchemaTex](https://schematex.js.org) diagram fences inline inside Notion pages.
 
