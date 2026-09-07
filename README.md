@@ -28,8 +28,8 @@ The script keeps `@updateURL`/`@downloadURL` pointed at the same raw GitHub URL,
 
    ````
    ```schematex
-   flowchart
-     A -> B
+   genogram
+     alice [female]
    ```
    ````
 
@@ -52,7 +52,7 @@ Open Tampermonkey's menu (the extension icon in your browser toolbar) and choose
 | Auto-render | on / off | on |
 | Toggle icon position | `top-right`, `top-left` | `top-right` |
 
-Settings are saved to Tampermonkey's own storage (`GM_setValue`) and take effect immediately — no reinstall or page reload beyond the next scan is needed.
+Settings are saved to Tampermonkey's own storage (`GM_setValue`) and are read the next time a block is processed for the first time — a changed setting has no effect on a block already rendered on the page (its `data-schematex-processed` marker is already set) until you reload the page and the block is detected fresh.
 
 ## Why "Markdown" code blocks
 
