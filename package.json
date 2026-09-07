@@ -1,0 +1,27 @@
+{
+  "name": "schematex-notion-tampermonkey",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Renders SchemaTex diagram fences inline inside Notion pages",
+  "license": "AGPL-3.0-only",
+  "author": "Volkan Unsal",
+  "scripts": {
+    "build": "node ./scripts/build.js",
+    "build:dev": "node ./scripts/build.js --dev",
+    "clean": "rm -rf out",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/tampermonkey": "^4.0.0",
+    "esbuild": "^0.25.9",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "schematex": "1.0.14",
+    "dompurify": "3.1.6"
+  }
+}
