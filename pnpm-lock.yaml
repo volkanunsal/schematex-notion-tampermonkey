@@ -15,6 +15,9 @@ importers:
         specifier: 1.0.14
         version: 1.0.14
     devDependencies:
+      '@types/dompurify':
+        specifier: 3.0.5
+        version: 3.0.5
       '@types/node':
         specifier: ^24.3.0
         version: 24.13.3
@@ -533,6 +536,9 @@ packages:
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
 
+  '@types/dompurify@3.0.5':
+    resolution: {integrity: sha512-1Wg0g3BtQF7sSb27fJQAKck1HECM6zV1EB66j8JH9i3LCjYabJa0FSdiSgsD5K/RbrsR0SiraKacLB+T8ZVYAg==}
+
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
@@ -541,6 +547,9 @@ packages:
 
   '@types/tampermonkey@4.20.4':
     resolution: {integrity: sha512-8w9QsNyZ2RDzmNA8UPbGvEx2Czwjg6/dEQ7Oqi5SqdNlmjJvBz+eg8bY6nt33BOsLKJERD6Kk3RGBVr5ZhcEWA==}
+
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
   '@vitest/expect@3.2.7':
     resolution: {integrity: sha512-E8eBXaKibuvH2pSZErOjdVb5vF4PbKYcrnluBTYxEk1l/VhhwZg1kZQsdtjq+CsF5CFydf2Rdkz7jDHKSisi3w==}
@@ -1216,6 +1225,10 @@ snapshots:
 
   '@types/deep-eql@4.0.2': {}
 
+  '@types/dompurify@3.0.5':
+    dependencies:
+      '@types/trusted-types': 2.0.7
+
   '@types/estree@1.0.9': {}
 
   '@types/node@24.13.3':
@@ -1223,6 +1236,8 @@ snapshots:
       undici-types: 7.18.2
 
   '@types/tampermonkey@4.20.4': {}
+
+  '@types/trusted-types@2.0.7': {}
 
   '@vitest/expect@3.2.7':
     dependencies:

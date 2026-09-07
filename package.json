@@ -13,6 +13,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
+    "@types/dompurify": "3.0.5",
     "@types/node": "^24.3.0",
     "@types/tampermonkey": "^4.0.0",
     "esbuild": "^0.25.9",
@@ -21,7 +22,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
-    "schematex": "1.0.14",
-    "dompurify": "3.1.6"
+    "dompurify": "3.1.6",
+    "schematex": "1.0.14"
   }
 }
