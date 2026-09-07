@@ -5,9 +5,11 @@
 // @description  Renders SchemaTex diagram fences inline inside Notion pages
 // @author       Volkan Unsal
 // @match        https://www.notion.so/*
+// @match        https://*.notion.site/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
+// @grant        GM_addStyle
 // @updateURL    https://raw.githubusercontent.com/volkanunsal/schematex-notion-tampermonkey/main/out/schematex-notion.user.js
 // @downloadURL  https://raw.githubusercontent.com/volkanunsal/schematex-notion-tampermonkey/main/out/schematex-notion.user.js
 // ==/UserScript==
@@ -21,13 +23,44 @@ import {
   loadSettings,
   openSettingsModal,
   type GMStorage,
+  type Theme,
 } from "./lib/settings";
+
+// schematex's renderer understands only "light"/"dark" — "auto" is a
+// settings-layer concept resolved against the OS/browser color scheme right
+// before it reaches the renderer's config.
+export function resolveTheme(theme: Theme): "light" | "dark" {
+  if (theme === "auto") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return theme;
+}
+
+// Guards against Notion recreating the code-block element and losing its
+// data-schematex-processed marker: if the next sibling is already a live
+// rendered/trigger container, this block was already handled even though its
+// own marker is gone, so skip it rather than attaching a second container.
+function hasLiveSiblingContainer(element: HTMLElement): boolean {
+  const sibling = element.nextElementSibling;
+  if (sibling === null) {
+    return false;
+  }
+  return (
+    sibling.classList.contains("schematex-rendered") ||
+    sibling.classList.contains("schematex-manual-trigger-container")
+  );
+}
 
 export function processPage(root: ParentNode, deps: RenderDeps, storage: GMStorage): void {
   const settings = loadSettings(storage);
   const detectedBlocks = findUnprocessedSchematexBlocks(root);
 
   for (const block of detectedBlocks) {
+    if (hasLiveSiblingContainer(block.element)) {
+      block.element.setAttribute("data-schematex-processed", "true");
+      continue;
+    }
+
     // Mark processed at detection time, not only after rendering — otherwise
     // an un-clicked manual-mode block is re-detected on every subsequent
     // MutationObserver firing and gets a duplicate trigger button each time.
@@ -35,7 +68,7 @@ export function processPage(root: ParentNode, deps: RenderDeps, storage: GMStora
 
     const runRender = () => {
       const { renderedContainer } = renderDetectedBlock(block, deps, {
-        theme: settings.theme,
+        theme: resolveTheme(settings.theme),
       });
       attachToggle(block.element, renderedContainer, settings.toggleIconPosition);
     };
@@ -58,6 +91,48 @@ export function processPage(root: ParentNode, deps: RenderDeps, storage: GMStora
   }
 }
 
+const STYLES = `
+.schematex-rendered {
+  position: relative;
+  margin: 8px 0;
+}
+
+.schematex-error {
+  padding: 12px;
+  border-radius: 6px;
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+  color: #611a15;
+}
+
+.schematex-toggle {
+  position: absolute;
+  z-index: 10;
+}
+
+.schematex-toggle--top-right {
+  top: 4px;
+  right: 4px;
+}
+
+.schematex-toggle--top-left {
+  top: 4px;
+  left: 4px;
+}
+
+.schematex-settings-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999999;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 16px;
+}
+`;
+
 // @types/tampermonkey (declared in tsconfig.json's "types" array) already
 // provides ambient global declarations for GM_getValue/GM_setValue/
 // GM_registerMenuCommand — redeclaring them here would collide under
@@ -66,6 +141,8 @@ export function processPage(root: ParentNode, deps: RenderDeps, storage: GMStora
 function main(): void {
   const storage: GMStorage = { getValue: GM_getValue, setValue: GM_setValue };
   const deps: RenderDeps = { renderPreviewToContainer };
+
+  GM_addStyle(STYLES);
 
   GM_registerMenuCommand("SchemaTex Settings", () => {
     openSettingsModal(storage);
